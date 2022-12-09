@@ -23,11 +23,13 @@ async function WhatsApp(client, app) {
                     email: 'erick110999@gmail.com',
                 },
                 payment_method_id: 'pix',
-                notification_url: 'http://179.98.153.155:8080/callback_payment'
+                notification_url: 'http://15.228.21.196:' + PORT + '/callback_payment'
             }).then((response) => client.sendText(message.from, `Chave copia e cola: \n\n${response.body.point_of_interaction.transaction_data.qr_code}`))
         }
     })
 
     app.get('/', (req, res) => res.send('OK'))
-    app.post('/callback_payment', (req, res) => console.log(req.body))
+    app.post('/callback_payment', (req, res) => {
+        mercadopago.payment.get(req.query.id).then(res => console.log(res))
+    })
 }
